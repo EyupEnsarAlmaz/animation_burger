@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'const.dart';
+import 'main_method.dart';
+import 'model/data.position.dart';
+import 'model/data_name.dart';
+import 'model/data_value.dart';
 
 void main() => runApp(const MyApp());
 
@@ -15,7 +18,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    const appTitle = 'Food Animation App';
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: appTitle,
@@ -36,30 +38,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-double leftPosition = 20;
-
-bool _valueMarul = false;
-bool _valueDomates = false;
-bool _valueSogan = false;
-bool _valueTursu = false;
-bool _valuePeynir = false;
-
-bool _selectedMarul = false;
-bool _selectedDomates = false;
-bool _selectedSogan = false;
-bool _selectedTursu = false;
-bool _selectedPeynir = false;
-
 List foodItem = [];
-double topp = 110;
-
-arttir() {
-  topp -= 19;
-}
-
-azalt() {
-  topp += 19;
-}
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
@@ -71,220 +50,180 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(children: [
         Expanded(
-          flex: 1,
-          child: Stack(
-            children: [
-              AnimatedPositioned(
-                top: 205, // ellenmicek
-                left: 100,
-                duration: const Duration(milliseconds: 500),
-                child: animatedOpacity(
-                    image: Image.asset(
-                      ImagePath().ekmekaltiPath,
-                      width: 250,
-                      height: 100,
-                    ),
-                    opacity: 1.0),
-              ),
-              AnimatedPositioned(
-                top: 190,
-                left: 100,
-                duration: const Duration(milliseconds: 500),
-                child: animatedOpacity(
-                    image: Image.asset(
-                      ImagePath().ustkivircikPath,
-                      width: 250,
-                      height: 100,
-                    ),
-                    opacity: _valueMarul ? 1.0 : 0.0),
-              ),
-              AnimatedPositioned(
-                top: _valueMarul ? 170 : 168,
-                left: 100,
-                duration: const Duration(milliseconds: 500),
-                child: animatedOpacity(
-                    image: Image.asset(
-                      ImagePath().etPath,
-                      width: 250,
-                      height: 100,
-                    ),
-                    opacity: 1.0),
-              ),
-              AnimatedPositioned(
-                top: foodItem.length < 2 ? 160 : 160,
-                left: 100,
-                duration: const Duration(milliseconds: 500),
-                child: animatedOpacity(
-                    image: Image.asset(
-                      ImagePath().peynirPath,
-                      width: 250,
-                      height: 100,
-                    ),
-                    opacity: _valuePeynir ? 1.0 : 0.0),
-              ),
-              AnimatedPositioned(
-                top: _valuePeynir ? 130 : 140,
-                left: 100,
-                duration: const Duration(milliseconds: 500),
-                child: animatedOpacity(
-                    image: Image.asset(
-                      ImagePath().domatesPath,
-                      width: 250,
-                      height: 100,
-                    ),
-                    opacity: _valueDomates ? 1.0 : 0.0),
-              ),
-              AnimatedPositioned(
-                top: _valuePeynir && _valueDomates
-                    ? 110
-                    : _valueDomates
-                        ? 120
-                        : _valuePeynir
-                            ? 130
-                            : 140,
-                left: 100,
-                duration: const Duration(milliseconds: 500),
-                child: animatedOpacity(
-                    image: Image.asset(
-                      ImagePath().soganPath,
-                      width: 250,
-                      height: 100,
-                    ),
-                    opacity: _valueSogan ? 1.0 : 0.0),
-              ),
-              AnimatedPositioned(
-                top: _valueSogan && _valueDomates && _valuePeynir
-                    ? 95
-                    : _valueSogan && _valueDomates
-                        ? 100
-                        : _valueSogan && _valuePeynir
-                            ? 120
-                            : _valueDomates && _valuePeynir
-                                ? 100
-                                : _valueDomates
-                                    ? 120
-                                    : _valuePeynir
-                                        ? 130
-                                        : _valueSogan
-                                            ? 120
-                                            : 140,
-                left: 110,
-                duration: const Duration(milliseconds: 500),
-                child: animatedOpacity(
-                    image: Image.asset(
-                      ImagePath().tursuPath,
-                      width: 340,
-                      height: 100,
-                    ),
-                    opacity: _valueTursu ? 1.0 : 0.0),
-              ),
-              AnimatedPositioned(
-                top: topp,
-                left: 100,
-                duration: const Duration(milliseconds: 500),
-                child: animatedOpacity(
-                    image: Image.asset(
-                      ImagePath().ustEkmek,
-                      width: 250,
-                      height: 120,
-                    ),
-                    opacity: 1.0),
-              ),
-            ],
-          ),
+          child: _animatedStack(),
         ),
         Expanded(
-          child: ListView(children: [
-            CheckboxListTile(
-              activeColor: Colors.green,
-              checkColor: Colors.white,
-              title: Text("Marul"),
-              value: _valueMarul,
-              selected: _selectedMarul,
-              onChanged: (bool? valueMarul) {
-                setState(() {
-                  _valueMarul = !_valueMarul;
-                  _valueMarul
-                      ? foodItem.add(_selectedMarul)
-                      : foodItem.remove(_selectedMarul);
-                });
-              },
-            ),
-            CheckboxListTile(
-              activeColor: Colors.green,
-              checkColor: Colors.white,
-              title: Text("Domates"),
-              value: _valueDomates,
-              selected: _selectedDomates,
-              onChanged: (bool? valueDomates) {
-                setState(() {
-                  _valueDomates = !_valueDomates;
-                  _valueDomates
-                      ? foodItem.add(_selectedDomates)
-                      : foodItem.remove(_selectedDomates);
-                  _valueDomates ? arttir() : azalt();
-                });
-              },
-            ),
-            CheckboxListTile(
-              activeColor: Colors.green,
-              checkColor: Colors.white,
-              title: Text("Soğan"),
-              value: _valueSogan,
-              selected: _selectedSogan,
-              onChanged: (bool? valueSogan) {
-                setState(() {
-                  _valueSogan = !_valueSogan;
-                  _valueSogan
-                      ? foodItem.add(_selectedSogan)
-                      : foodItem.remove(_selectedSogan);
-                  _valueSogan ? arttir() : azalt();
-                });
-              },
-            ),
-            CheckboxListTile(
-              activeColor: Colors.green,
-              checkColor: Colors.white,
-              title: Text("Turşu"),
-              value: _valueTursu,
-              selected: _selectedTursu,
-              onChanged: (bool? valueTursu) {
-                setState(() {
-                  _valueTursu = !_valueTursu;
-                  _valueTursu
-                      ? foodItem.add(_selectedTursu)
-                      : foodItem.remove(_selectedTursu);
-                  _valueTursu ? arttir() : azalt();
-                });
-              },
-            ),
-            CheckboxListTile(
-              activeColor: Colors.green,
-              checkColor: Colors.white,
-              title: Text("Peynir"),
-              value: _valuePeynir,
-              selected: _selectedPeynir,
-              onChanged: (bool? valuePeynir) {
-                setState(() {
-                  _valuePeynir = !_valuePeynir;
-                  _valuePeynir
-                      ? foodItem.add(_selectedPeynir)
-                      : foodItem.remove(_selectedPeynir);
-                  _valuePeynir ? arttir() : azalt();
-                });
-              },
-            ),
-          ]),
-        )
+          child: checkBoxListview(),
+        ),
       ]),
     );
   }
 
-  AnimatedOpacity animatedOpacity(
-      {required Widget image, required double opacity}) {
-    return AnimatedOpacity(
-        opacity: opacity,
-        duration: const Duration(milliseconds: 500),
-        child: image);
+  Stack _animatedStack() {
+    return Stack(
+      children: [
+        animatedPositioned(
+            top: ekmekAltiTop,
+            animated: animatedOpacity(
+                image: Image.asset(
+                  ImagePath().ekmekaltiPath,
+                  width: width,
+                  height: height2,
+                ),
+                opacity: open)),
+        animatedPositioned(
+            top: ustKivircikTop,
+            animated: animatedOpacity(
+                image: Image.asset(
+                  ImagePath().ustkivircikPath,
+                  width: width,
+                  height: height2,
+                ),
+                opacity: valueMarul ? open : close)),
+        animatedPositioned(
+            top: valueMarul ? etTop : etTop - 2,
+            animated: animatedOpacity(
+                image: Image.asset(
+                  ImagePath().etPath,
+                  width: width,
+                  height: height,
+                ),
+                opacity: open)),
+        animatedPositioned(
+            top: foodItem.length < 2 ? peynirTop : peynirTop,
+            animated: animatedOpacity(
+                image: Image.asset(
+                  ImagePath().peynirPath,
+                  width: width,
+                  height: height,
+                ),
+                opacity: valuePeynir ? open : close)),
+        animatedPositioned(
+            top: valuePeynir ? domatesTop - 10 : domatesTop,
+            animated: animatedOpacity(
+                image: Image.asset(
+                  ImagePath().domatesPath,
+                  width: width,
+                  height: height,
+                ),
+                opacity: valueDomates ? open : close)),
+        animatedPositioned(
+            top: valuePeynir && valueDomates
+                ? soganTop
+                : valueDomates
+                    ? soganTop + 10
+                    : valuePeynir
+                        ? soganTop + 20
+                        : soganTop + 30,
+            animated: animatedOpacity(
+                image: Image.asset(
+                  ImagePath().soganPath,
+                  width: width,
+                  height: height,
+                ),
+                opacity: valueSogan ? open : close)),
+        animatedPositioned(
+            top: valueSogan && valueDomates && valuePeynir
+                ? tursuTop
+                : valueSogan && valueDomates
+                    ? tursuTop + 10
+                    : valueSogan && valuePeynir
+                        ? tursuTop + 20
+                        : valueDomates && valuePeynir
+                            ? tursuTop + 5
+                            : valueDomates
+                                ? tursuTop + 25
+                                : valuePeynir
+                                    ? tursuTop + 35
+                                    : valueSogan
+                                        ? tursuTop + 25
+                                        : tursuTop + 45,
+            animated: animatedOpacity(
+                image: Image.asset(
+                  ImagePath().tursuPath,
+                  width: 340,
+                  height: height,
+                ),
+                opacity: valueTursu ? open : close)),
+        animatedPositioned(
+            top: topp,
+            animated: animatedOpacity(
+                image: Image.asset(
+                  ImagePath().ustEkmek,
+                  width: width,
+                  height: height2,
+                ),
+                opacity: open)),
+      ],
+    );
+  }
+
+  ListView checkBoxListview() {
+    return ListView(children: [
+      chekbox(
+          title: Text(FoodName().marulName),
+          value: valueMarul,
+          selected: selectedMarul,
+          onChanged: (_) {
+            setState(() {
+              valueMarul = !valueMarul;
+              valueMarul
+                  ? foodItem.add(selectedMarul)
+                  : foodItem.remove(selectedMarul);
+            });
+          }),
+      chekbox(
+          title: Text(FoodName().domatesName),
+          value: valueDomates,
+          selected: selectedDomates,
+          onChanged: (_) {
+            setState(() {
+              valueDomates = !valueDomates;
+              valueDomates
+                  ? foodItem.add(selectedDomates)
+                  : foodItem.remove(selectedDomates);
+              valueDomates ? arttir() : azalt();
+            });
+          }),
+      chekbox(
+          title: Text(FoodName().soganName),
+          value: valueSogan,
+          selected: selectedSogan,
+          onChanged: (_) {
+            setState(() {
+              valueSogan = !valueSogan;
+              valueSogan
+                  ? foodItem.add(selectedSogan)
+                  : foodItem.remove(selectedSogan);
+              valueSogan ? arttir() : azalt();
+            });
+          }),
+      chekbox(
+          title: Text(FoodName().tursuName),
+          value: valueTursu,
+          selected: selectedTursu,
+          onChanged: (_) {
+            setState(() {
+              valueTursu = !valueTursu;
+              valueTursu
+                  ? foodItem.add(selectedTursu)
+                  : foodItem.remove(selectedTursu);
+              valueTursu ? arttir() : azalt();
+            });
+          }),
+      chekbox(
+          title: Text(FoodName().peynirName),
+          value: valuePeynir,
+          selected: selectedPeynir,
+          onChanged: (_) {
+            setState(() {
+              valuePeynir = !valuePeynir;
+              valuePeynir
+                  ? foodItem.add(selectedPeynir)
+                  : foodItem.remove(selectedPeynir);
+              valuePeynir ? arttir() : azalt();
+            });
+          })
+    ]);
   }
 }

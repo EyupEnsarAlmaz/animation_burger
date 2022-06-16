@@ -8,3 +8,13 @@ class ImagePath {
   String ustEkmek = "assets/ustekmekk.png";
   String ustkivircikPath = "assets/kivircikk.png";
 }
+
+class FoodName {
+  final String marulName = "Marul";
+  final String domatesName = "Domates";
+  final String soganName = "Soğan";
+  final String tursuName = "Turşu";
+  final String peynirName = "Peynir";
+}
+
+const appTitle = 'Food Animation App';
